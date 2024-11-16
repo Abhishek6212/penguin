@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Rock Paper Scissors</title>
+       
         <style>
             * {
                 margin: 0;
@@ -72,26 +73,78 @@
             <p style="font-size: 28px; text-align: center; margin-bottom: 60px;">Rock Paper Scissors</p>
             <p style="font-size: 24px; text-align: center; margin-bottom: 60px;">Please Choose:</p>
             <div style="display: flex; gap: 20px; justify-content: center;">
-                <button class="btn"><img src="Images/rock.png" width="40px" draggable="false"></button>
-                <button class="btn"><img src="Images/paper.png" width="40px" draggable="false"></button>
-                <button class="btn"><img src="Images/scissors.png" width="40px" draggable="false"></button>
+                <button onclick="playGame('stone')" class="btn"><img src="Images/rock.png" width="40px" draggable="false"></button>
+                <button onclick="playGame('paper')" class="btn"><img src="Images/paper.png" width="40px" draggable="false"></button>
+                <button onclick="playGame('scissors')" class="btn"><img src="Images/scissors.png" width="40px" draggable="false"></button>
             </div>
+            
+            <!-- Added this to display the result of the game -->
+            <p id="result" style="font-size: 24px; text-align: center; margin-top: 20px;"></p>
+        
             <div style="position: absolute; top: 10px; right: -115px; display: flex; flex-direction: column; gap: 10px;">
-                <div style="background-color: #FF2929; color: whitesmoke; border-radius: 12px; padding: 10px;">
-                    <p style="font-size: 18px;">Highest:</p>
-                    <div style="display: flex; align-items: center; gap: 2px; justify-content: center;">
-                        <img src="Images/fire.png" width="20px" draggable="false">
-                        <p>101</p>
-                    </div>
-                </div>
                 <div style="background-color: #FF2929; color: whitesmoke; border-radius: 12px; padding: 10px;">
                     <p style="font-size: 18px;">Current:</p>
                     <div style="display: flex; align-items: center; gap: 2px; justify-content: center;">
                         <img src="Images/fire.png" width="20px" draggable="false">
-                        <p>69</p>
+                        <p id="streak"></p>
+                    </div>
+                </div>
+                <div style="background-color: #FF2929; color: whitesmoke; border-radius: 12px; padding: 10px;">
+                    <p style="font-size: 18px;">Highest:</p>
+                    <div style="display: flex; align-items: center; gap: 2px; justify-content: center;">
+                        <img src="Images/fire.png" width="20px" draggable="false">
+                        <p id="longestStreak"></p>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+                    const choices = ['stone', 'paper', 'scissors'];
+
+                let currentStreak = 0;
+                let longestStreak = 0;
+                let lastWinner = '';
+
+                function playGame(userChoice) {
+                    if (currentStreak > longestStreak) {
+                        longestStreak = currentStreak;
+                    }
+
+                    const randomIndex = Math.floor(Math.random() * 3);
+                    const computerChoice = choices[randomIndex];
+
+                    console.log(`Computer's choice: ${computerChoice}`);
+                    console.log(`Your choice: ${userChoice}`);
+
+                    let result = '';
+
+                    if (userChoice === computerChoice) {
+                        result = "It's a tie!";
+                        lastWinner = 'both';
+                    } else if (
+                        (userChoice === 'stone' && computerChoice === 'scissors') ||
+                        (userChoice === 'paper' && computerChoice === 'stone') ||
+                        (userChoice === 'scissors' && computerChoice === 'paper')
+                    ) {
+                        result = "You win!";
+                        currentStreak++;  
+                        lastWinner = 'User';
+                    } else {
+                        result = "Computer wins!";
+                        currentStreak = 0;  
+                        lastWinner = 'Computer';
+                    }
+
+
+                    if (currentStreak > longestStreak) {
+                        longestStreak = currentStreak;
+                    }
+
+                    document.getElementById('result').innerText = result;
+                    document.getElementById('streak').innerText = currentStreak;
+                    document.getElementById('longestStreak').innerText = longestStreak;
+                }
+
+            </script>
     </body>
 </html>
